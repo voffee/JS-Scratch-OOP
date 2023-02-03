@@ -1,53 +1,49 @@
 
-// String
+// Object.prototype
 
-const name1 = 'Jeff'; //primitive so the type will be string and value Jeff
+// Person.prototype
+function Person(firstName, lastName, dob) {
+    this.firstName = firstName;
+    this.lastName = lastName;
+    this.birthday = new Date(dob);
+    // this.calculateAge = function() {
+    //     const diff = Date.now() - this.birthday.getTime();
+    //     const ageDate = new Date(diff);
 
-const name2 = new String('Jeff'); // Type will be object with VALUE of Jeff
-
-// name2.foo = 'bar'; // Property of foo and value of 'bar'
-// console.log(name2);
-
-console.log(typeof name2);
-
-if (name2 == 'Jeff') {
-    // Double == will validate the value but not type
-    // Triple === will validate value and type
-    console.log('YES');
-} else {
-    console.log('NO');
+    //     return Math.abs(ageDate.getUTCFullYear() - 1970);
+    // }
 }
 
-// Number
-const num1 = 5;
-const num2 = new Number(5);
+// Calculate age
+Person.prototype.calculateAge = function() {
+    const diff = Date.now() - this.birthday.getTime();
+    const ageDate = new Date(diff);
 
-// Boolean
-const bool1 = true;
-const bool2 = new Boolean(true);
-
-// Functions
-const getSum1 = function(x, y) {
-return x + y;
+    return Math.abs(ageDate.getUTCFullYear() - 1970);
 }
 
-const getSum2 = new Function('x', 'y', 'return 1 + 1');
+// Get full name
+Person.prototype.getFullName = function(){
+    return `${this.firstName} ${this.lastName}`;
+}
 
-// Object
-const john1 = {name: "John"};
-const john2 = new Object({name: "John"});
+// Gets Married
+Person.prototype.getsMarried = function(newLastName){
+    this.lastName = newLastName;
+}
 
-console.log(john2);
+const john = new Person('John', 'Doe', '8-12-90');
+const mary = new Person('Mary', 'Jane', '20 March 1980');
 
-// Arrays
-const arr1 = [1,2,3,4];
-const arr2 = new Array(1,2,3,4);
+console.log(mary);
 
-// Can use this way of creating arrays, it is not useful for the other types of structures.
-console.log(arr1);
+console.log(john.calculateAge());
 
-// Regular Expressions
-const re1 = /\w+/;
-const re2 = new RegExp('\\w+');
+console.log(mary.getFullName());
 
-console.log(re2);
+mary.getsMarried('Quentin');
+
+console.log(mary.getFullName());
+
+console.log(mary.hasOwnProperty('firstName'));
+console.log(mary.hasOwnProperty('getFullName')); //Only checks for values in original function, not prototypes
