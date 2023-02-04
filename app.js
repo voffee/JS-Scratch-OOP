@@ -1,49 +1,41 @@
 
-// Object.prototype
-
-// Person.prototype
-function Person(firstName, lastName, dob) {
+// Person constructor
+function Person(firstName, lastName) {
     this.firstName = firstName;
     this.lastName = lastName;
-    this.birthday = new Date(dob);
-    // this.calculateAge = function() {
-    //     const diff = Date.now() - this.birthday.getTime();
-    //     const ageDate = new Date(diff);
-
-    //     return Math.abs(ageDate.getUTCFullYear() - 1970);
-    // }
 }
 
-// Calculate age
-Person.prototype.calculateAge = function() {
-    const diff = Date.now() - this.birthday.getTime();
-    const ageDate = new Date(diff);
-
-    return Math.abs(ageDate.getUTCFullYear() - 1970);
+// Greeting
+Person.prototype.greeting = function() {
+    return `Hello there ${this.firstName} ${this.lastName}`;
 }
 
-// Get full name
-Person.prototype.getFullName = function(){
-    return `${this.firstName} ${this.lastName}`;
+const person1 = new Person('John', 'Doe');
+
+// console.log(person1.greeting());
+
+// Customer Constructor
+function Customer(firstName, lastName, phone, membership) {
+    Person.call(this, firstName, lastName);
+
+    this.phone = phone;
+    this.membership = membership;
 }
 
-// Gets Married
-Person.prototype.getsMarried = function(newLastName){
-    this.lastName = newLastName;
+// Inherit the Person prototype methods
+Customer.prototype = Object.create(Person.prototype);
+
+// Make customer.prototype return Customer()
+Customer.prototype.constructor = Customer;
+
+// Create customer
+const customer1 = new Customer('Tom', 'Smith', '555-555-5555', 'Standard');
+
+console.log(customer1);
+
+// Customer greeting
+Customer.prototype.greeting = function() {
+    return `Hello there ${this.firstName} ${this.lastName} Welcome to our company`;
 }
 
-const john = new Person('John', 'Doe', '8-12-90');
-const mary = new Person('Mary', 'Jane', '20 March 1980');
-
-console.log(mary);
-
-console.log(john.calculateAge());
-
-console.log(mary.getFullName());
-
-mary.getsMarried('Quentin');
-
-console.log(mary.getFullName());
-
-console.log(mary.hasOwnProperty('firstName'));
-console.log(mary.hasOwnProperty('getFullName')); //Only checks for values in original function, not prototypes
+console.log(customer1.greeting());
